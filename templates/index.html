@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+    <h1>Jeu de la réussite</h1>
+    <h2>Tapis de jeu :</h2>
+    <table class="table-container">
+    <tr>
+        {% for valeur in liste_valeur %}
+            <th>
+            {% if valeur == '0' %}
+                <h1>10</h1>
+            {%  else  %}
+                <h1>{{ valeur }}</h1>
+            {% endif %}
+            </th>
+        {% endfor %}
+    </tr>
+    {% set nb_carte = 0 %}
+    {% for i in range(0, 4) %}
+        <tr>
+            {% for j in range(0, 9) %}
+                {% set nb_carte = i * 9 + j %}
+                <td>
+                    <img src="{{ carte_data['cards'][nb_carte]['image'] }}" alt="{{ carte_data['cards'][nb_carte]['code'] }}">
+                    <span>{{ nb_carte }}</span>
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
