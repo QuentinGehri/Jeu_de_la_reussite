@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+    <h1>Page de connexion</h1>
+    <form method="post" action="">
+        {{ form.hidden_tag() }}
+        {{ form.pseudo }}
+        {{ form.mot_de_passe }}
+        {{ form.submit }}
+    </form>
+    <a href="{{ url_for('inscription') }}">S'inscrire</a>
+{% endblock %}

@@ -7,6 +7,7 @@
 {% block body %}
     <h1>Jeu de la réussite</h1>
     <h2>Tapis de jeu :</h2>
+    <a href="{{ url_for('deconnexion') }}">Déconnexion</a>
     <table class="table-container">
     <tr>
         {% for valeur in liste_valeur %}
