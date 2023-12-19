@@ -1,13 +1,3 @@
-#tapisJeu a {
-    color: white;
-}
-
-#tapisJeu h1 {
-    text-align: center;
-    color: white;
-    margin-top: 20px;
-}
-
 /* Style de base */
 #tapisJeu {
     font-family: Arial, sans-serif;
@@ -15,6 +5,32 @@
     background-color: #134d06;
 }
 
+/* Conteneur principal */
+#tapisJeu {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #134d06;
+    background-size: cover;
+    color: white;
+}
+
+/* Titres */
+#tapisJeu h1, #tapisJeu h2 {
+    text-align: center;
+}
+
+/* Liens de déconnexion */
+#tapisJeu a {
+    display: block;
+    text-align: center;
+    margin-bottom: 15px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Tableau */
 .table-container {
     width: 100%;
     border-collapse: collapse;
@@ -26,124 +42,93 @@
     text-align: center;
 }
 
-/* Style pour les petits écrans (par exemple, jusqu'à 600px) */
-@media only screen and (max-width: 600px) {
-    .table-container th, .table-container td {
-        padding: 5px;
-        font-size: 12px;
-    }
-}
+/* Styles pour les écrans de différentes tailles */
 
-/* Style pour les écrans de taille moyenne (par exemple, entre 601px et 1024px) */
-@media only screen and (min-width: 601px) and (max-width: 1024px) {
-    .table-container th, .table-container td {
-        padding: 8px;
-        font-size: 14px;
-    }
-}
-
-/* Style pour les grands écrans (par exemple, supérieur à 1024px) */
-@media only screen and (min-width: 1025px) {
-    .table-container th, .table-container td {
-        padding: 10px;
-        font-size: 16px;
-    }
-}
-
-/* Style pour le conteneur principal */
-#tapisJeu {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #134d06;
-    background-size: cover;
-    color: white;
-}
-
-/* Style pour les titres */
-h1, h2 {
-    text-align: center;
-}
-
-/* Style pour le lien de déconnexion */
-a {
-    display: block;
-    text-align: center;
-    margin-bottom: 15px;
-    color: #333;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-/* Style pour les images des cartes */
-.table-container img {
-    width: 100%;
+/* Ajoutez ces règles pour les petits écrans (jusqu'à 600px) */
+.card, .symbole {
+    width: 10%; /* ou ajustez selon vos besoins */
     height: auto;
-    max-width: 100px;
-    display: block;
-    margin: 0 auto;
 }
 
-/* Style pour les spans à l'intérieur des cellules de la table */
-.table-container span {
+.card img, .symbole img {
+    max-width: 100%;
+    height: auto;
+}
+
+.card span {
+    font-size: 10px; /* ou ajustez selon vos besoins */
+}
+
+/* Ajoutez ces règles pour les écrans de taille moyenne (entre 601px et 1024px) */
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+    .card, .symbole {
+        width: 15%; /* ou ajustez selon vos besoins */
+        height: auto;
+    }
+
+    .card span {
+        font-size: 12px; /* ou ajustez selon vos besoins */
+    }
+}
+
+/* Ajoutez ces règles pour les grands écrans (supérieurs à 1024px) */
+@media only screen and (min-width: 1025px) {
+    .card, .symbole {
+        width: 20%; /* ou ajustez selon vos besoins */
+        height: auto;
+    }
+
+    .card span {
+        font-size: 14px; /* ou ajustez selon vos besoins */
+    }
+}
+
+/* Animation de la carte */
+.table-container:hover .card {
+    cursor: pointer;
+}
+
+/* Carte */
+.card {
+    position: relative;
+    transition: transform 1500ms;
+    transform-style: preserve-3d;
+    width: 100px;
+    height: 150px;
+    margin: 5px;
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+.front,
+.back {
+    box-shadow: 0 0 5px 2px rgba(50, 50, 50, 0.25);
+    position: absolute;
+    backface-visibility: hidden;
+}
+
+.back {
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+}
+
+/* Ajout de styles pour les images dans les cartes */
+.card img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Ajout de styles pour le span à l'intérieur des cellules de la table */
+.card span {
     display: block;
     text-align: center;
     margin-top: 5px;
     font-size: 12px;
-    color: white;
-}
-
-/* Réinitialisation des styles par défaut pour assurer une base cohérente */
-body, h1, form {
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-}
-
-h1 {
-    text-align: center;
-    color: #333;
-    margin-top: 20px;
-}
-
-form {
-    max-width: 400px;
-    margin: 20px auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-form input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    box-sizing: border-box;
-}
-
-form button {
-    background-color: #3498db;
-    color: #fff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    width: 100%;
-}
-
-form button:hover {
-    background-color: #2980b9;
-}
-
-a {
-    display: block;
-    text-align: center;
-    color: #333;
-    text-decoration: none;
-    margin-top: 10px;
+    color: #777;
 }

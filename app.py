@@ -26,6 +26,8 @@ with app.app_context():
 
 LISTE_SUIT = ['H', 'S', 'D', 'C']
 LISTE_VALUE = ['A', 'K', 'Q', 'J', '0', '9', '8', '7', '6']
+URL_DOS_CARTE = "https://www.deckofcardsapi.com/static/img/back.png"
+URL_COEUR_SYMBOLE = "./static/images/coeur.png"
 
 
 def init_deck():
@@ -59,7 +61,8 @@ def jeu():
     if deck_data:
         cartes = tirer_les_cartes(deck_data['deck_id'])
         if cartes:
-            return render_template('jeu.html', carte_data=cartes, liste_valeur=LISTE_VALUE)
+            return render_template('jeu.html', carte_data=cartes, liste_valeur=LISTE_VALUE, dos_carte=URL_DOS_CARTE,
+                                   image_coeur=URL_COEUR_SYMBOLE)
         else:
             return "Erreur lors du tirage de la carte."
     else:

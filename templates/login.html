@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-
+<link rel="stylesheet" href="{{ url_for('static', filename="css/form.css") }}">
 {% endblock %}
 
 {% block body %}
@@ -16,3 +16,4 @@
         <a href="{{ url_for('inscription') }}">S'inscrire</a>
     </body>
 {% endblock %}
+{% block scripts %}{% endblock %}
