@@ -1,9 +1,149 @@
-body {
+#tapisJeu a {
+    color: white;
+}
+
+#tapisJeu h1 {
+    text-align: center;
+    color: white;
+    margin-top: 20px;
+}
+
+/* Style de base */
+#tapisJeu {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #134d06;
+}
+
+.table-container {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-container th, .table-container td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+/* Style pour les petits écrans (par exemple, jusqu'à 600px) */
+@media only screen and (max-width: 600px) {
+    .table-container th, .table-container td {
+        padding: 5px;
+        font-size: 12px;
+    }
+}
+
+/* Style pour les écrans de taille moyenne (par exemple, entre 601px et 1024px) */
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+    .table-container th, .table-container td {
+        padding: 8px;
+        font-size: 14px;
+    }
+}
+
+/* Style pour les grands écrans (par exemple, supérieur à 1024px) */
+@media only screen and (min-width: 1025px) {
+    .table-container th, .table-container td {
+        padding: 10px;
+        font-size: 16px;
+    }
+}
+
+/* Style pour le conteneur principal */
+#tapisJeu {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
     background-color: #134d06;
     background-size: cover;
     color: white;
 }
 
+/* Style pour les titres */
+h1, h2 {
+    text-align: center;
+}
+
+/* Style pour le lien de déconnexion */
 a {
-    color: white
+    display: block;
+    text-align: center;
+    margin-bottom: 15px;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Style pour les images des cartes */
+.table-container img {
+    width: 100%;
+    height: auto;
+    max-width: 100px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Style pour les spans à l'intérieur des cellules de la table */
+.table-container span {
+    display: block;
+    text-align: center;
+    margin-top: 5px;
+    font-size: 12px;
+    color: white;
+}
+
+/* Réinitialisation des styles par défaut pour assurer une base cohérente */
+body, h1, form {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-top: 20px;
+}
+
+form {
+    max-width: 400px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+form button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 100%;
+}
+
+form button:hover {
+    background-color: #2980b9;
+}
+
+a {
+    display: block;
+    text-align: center;
+    color: #333;
+    text-decoration: none;
+    margin-top: 10px;
 }
