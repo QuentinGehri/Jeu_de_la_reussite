@@ -46,40 +46,41 @@
 
 /* Ajoutez ces règles pour les petits écrans (jusqu'à 600px) */
 .card, .symbole {
-    width: 10%; /* ou ajustez selon vos besoins */
+    width: 10%;
     height: auto;
 }
 
 .card img, .symbole img {
     max-width: 100%;
     height: auto;
+    object-fit: contain;
 }
 
 .card span {
-    font-size: 10px; /* ou ajustez selon vos besoins */
+    font-size: 10px;
 }
 
 /* Ajoutez ces règles pour les écrans de taille moyenne (entre 601px et 1024px) */
 @media only screen and (min-width: 601px) and (max-width: 1024px) {
     .card, .symbole {
-        width: 15%; /* ou ajustez selon vos besoins */
+        width: 15%;
         height: auto;
     }
 
     .card span {
-        font-size: 12px; /* ou ajustez selon vos besoins */
+        font-size: 12px;
     }
 }
 
 /* Ajoutez ces règles pour les grands écrans (supérieurs à 1024px) */
 @media only screen and (min-width: 1025px) {
     .card, .symbole {
-        width: 20%; /* ou ajustez selon vos besoins */
+        width: 20%;
         height: auto;
     }
 
     .card span {
-        font-size: 14px; /* ou ajustez selon vos besoins */
+        font-size: 14px;
     }
 }
 
@@ -91,15 +92,20 @@
 /* Carte */
 .card {
     position: relative;
-    transition: transform 1500ms;
+    transition: transform 900ms;
     transform-style: preserve-3d;
     width: 100px;
     height: 150px;
-    margin: 5px;
+    margin: 10px;
 }
 
 .card.flipped {
     transform: rotateY(180deg);
+}
+
+.card.flipped img {
+    margin-left: 0px;
+    margin-right: -8px;
 }
 
 .front,
@@ -122,6 +128,8 @@
 .card img {
     max-width: 100%;
     height: auto;
+    margin-top: -50px;
+    margin-left: -8px;
 }
 
 /* Ajout de styles pour le span à l'intérieur des cellules de la table */
