@@ -23,7 +23,6 @@ def load_user(id_joueur):
 
 
 with app.app_context():
-    db.drop_all()
     db.create_all()
 
 LISTE_SUIT = ['H', 'S', 'D', 'C']

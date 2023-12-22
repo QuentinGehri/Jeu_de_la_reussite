@@ -34,7 +34,7 @@
                             <img src="{{ liste[i] }}" alt="Symbole de coeur" class="imageSymbole">
                         </td>
                     {%  else  %}
-                    <td class="card">
+                    <td class="card" id="{{ i * 9 + j }}">
                         <div class="front">
                             <img src="{{ dos_carte }}" alt="Dos de la carte">
                         </div>
