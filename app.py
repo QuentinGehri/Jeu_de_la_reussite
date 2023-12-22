@@ -10,6 +10,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bdd.db'
 app.config['SECRET_KEY'] = 'sixtrefle'
 db.init_app(app)
 bcrypt = Bcrypt(app)
+app.app_context().push()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -22,12 +23,14 @@ def load_user(id_joueur):
 
 
 with app.app_context():
+    db.drop_all()
     db.create_all()
 
 LISTE_SUIT = ['H', 'S', 'D', 'C']
 LISTE_VALUE = ['A', 'K', 'Q', 'J', '0', '9', '8', '7', '6']
 URL_DOS_CARTE = "https://www.deckofcardsapi.com/static/img/back.png"
-URL_COEUR_SYMBOLE = "./static/images/coeur.png"
+LISTE_SYMBOLE = ["./static/images/coeur.png", "./static/images/pique.png", "./static/images/carreau.png",
+                 "./static/images/trefle.png"]
 
 
 def init_deck():
@@ -62,7 +65,7 @@ def jeu():
         cartes = tirer_les_cartes(deck_data['deck_id'])
         if cartes:
             return render_template('jeu.html', carte_data=cartes, liste_valeur=LISTE_VALUE, dos_carte=URL_DOS_CARTE,
-                                   image_coeur=URL_COEUR_SYMBOLE)
+                                   liste=LISTE_SYMBOLE)
         else:
             return "Erreur lors du tirage de la carte."
     else:
@@ -74,10 +77,11 @@ def inscription():
     form = FormulaireInscription()
     if form.validate_on_submit():
         mdp_crypte = bcrypt.generate_password_hash(form.mot_de_passe.data)
-        nouveau_joueur = Joueur(pseudo=form.pseudo.data, mot_de_passe=mdp_crypte)
+        nouveau_joueur = Joueur(pseudo=form.pseudo.data, mot_de_passe=mdp_crypte, meilleur_score=0)
         db.session.add(nouveau_joueur)
         db.session.commit()
-        return redirect(url_for('connexion'))
+        login_user(nouveau_joueur)
+        return redirect(url_for('jeu'))
     return render_template('register.html', form=form)
 
 

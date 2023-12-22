@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
+
+*{
+    font-family: 'Silkscreen', sans-serif;
+}
+
 /* Style pour les titres */
 h1, h2 {
     text-align: center;

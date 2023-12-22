@@ -31,7 +31,7 @@
                     {% set nb_carte = (i * 9 + j) - 1 %}
                     {% if j == 0 %}
                         <td class="symbole">
-                            <img src="{{ image_coeur }}" alt="Symbole de coeur">
+                            <img src="{{ liste[i] }}" alt="Symbole de coeur" class="imageSymbole">
                         </td>
                     {%  else  %}
                     <td class="card">
@@ -51,37 +51,7 @@
     </body>
 {% endblock %}
     {% block scripts %}
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const cards = document.querySelectorAll('.card');
-                let flippedCard = null;
-                let isFlipping = false;
-
-                cards.forEach(card => {
-                    card.addEventListener('click', function () {
-                        // Vérifie si une carte est déjà retournée et si une animation est en cours
-                        if (!flippedCard && !isFlipping) {
-                            this.classList.toggle('flipped');
-                            flippedCard = this;
-                            isFlipping = true;
-                            // Ajoute un délai avant de permettre à une autre carte d'être retournée
-                            setTimeout(() => {
-                                isFlipping = false;
-                            }, 1500); // Ajustez le délai en fonction de la durée de votre transition
-                        } else if (!isFlipping) {
-                            // Cache la carte précédemment retournée si une autre est cliquée
-                            flippedCard.classList.remove('flipped');
-                            this.classList.toggle('flipped');
-                            flippedCard = this;
-                            isFlipping = true;
-
-                            setTimeout(() => {
-                                isFlipping = false;
-                            }, 1500);
-                        }
-                    });
-                });
-            });
+        <script src="../static/JS/carteRetourne.js">
         </script>
     {% endblock %}
 
