@@ -4,6 +4,7 @@ from flask_bcrypt import Bcrypt
 from forms import FormulaireInscription, FormulaireConnexion
 from models import db, Joueur
 import requests
+import numpy as np
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bdd.db'
@@ -63,8 +64,15 @@ def jeu():
     if deck_data:
         cartes = tirer_les_cartes(deck_data['deck_id'])
         if cartes:
+            # tableau_position_correct = np.empty((4, 9), dtype=object)
+            liste = []
+            for s in range(len(LISTE_SUIT)):
+                for v in range(len(LISTE_VALUE)):
+                    # tableau_position_correct[s][v] = value + LISTE_SUIT[s]
+                    liste.append(LISTE_VALUE[v] + LISTE_SUIT[s])
+            print(liste)
             return render_template('jeu.html', carte_data=cartes, liste_valeur=LISTE_VALUE, dos_carte=URL_DOS_CARTE,
-                                   liste=LISTE_SYMBOLE)
+                                   liste=LISTE_SYMBOLE, liste_pos_correct=liste)
         else:
             return "Erreur lors du tirage de la carte."
     else:

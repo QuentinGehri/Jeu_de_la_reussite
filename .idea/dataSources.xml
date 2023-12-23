@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:sqlite:C:\ESIGUsers\Reussite\instance\bdd.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="bdd [2]" uuid="5a2bb8dd-3d45-4f45-9b7e-b320d780dd1e">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\Gehri Valérie\PycharmProjects\Jeu_de_la_reussite\instance\bdd.db</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

@@ -41,17 +41,22 @@
                         <div class="back">
                             <img src="{{ carte_data['cards'][nb_carte]['image'] }}" alt="{{ carte_data['cards'][nb_carte]['code'] }}">
                         </div>
-                        <span>{{ nb_carte }}</span>
                     </td>
                     {% endif %}
                 {% endfor %}
             </tr>
         {% endfor %}
         </table>
+    <!--<div id="erreur">
+
+    </div>-->
     </body>
 {% endblock %}
     {% block scripts %}
-        <script src="../static/JS/carteRetourne.js">
+        <script src="../static/JS/carteRetourne.js"></script>
+        <script>
+            var listePosCorr = {{ liste_pos_correct | tojson | safe }};
+            faireFonctionnerLeJeu(listePosCorr);
         </script>
     {% endblock %}
 
