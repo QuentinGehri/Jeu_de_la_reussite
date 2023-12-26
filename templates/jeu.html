@@ -56,7 +56,9 @@
         <script src="../static/JS/carteRetourne.js"></script>
         <script>
             var listePosCorr = {{ liste_pos_correct | tojson | safe }};
-            faireFonctionnerLeJeu(listePosCorr);
+            var form = {{ form.to_js() | tojson | safe }};
+            var action = '{{ url_for('jeu') | tojson | safe }}';
+            faireFonctionnerLeJeu(listePosCorr, form, action);
         </script>
     {% endblock %}
 

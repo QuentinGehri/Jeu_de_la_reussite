@@ -1,8 +1,9 @@
 from flask import Flask, render_template, url_for, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
-from forms import FormulaireInscription, FormulaireConnexion
-from models import db, Joueur
+from flask_wtf.csrf import generate_csrf
+from forms import FormulaireInscription, FormulaireConnexion, FormGameOver
+from models import db, Joueur, load_user, update_score
 import requests
 import numpy as np
 
@@ -57,9 +58,18 @@ def tirer_les_cartes(id_deck):
     return None
 
 
-@app.route('/jeu')
+@app.route('/jeu', methods=['GET', 'POST'])
 @login_required
 def jeu():
+    form = FormGameOver()
+    form.csrf_token.data = generate_csrf()
+    print("hello")
+    if form.validate_on_submit():
+        print("hello2")
+        if current_user.is_authenticated:
+            user_id = current_user.id
+            update_score(user_id, form.points.data)
+            print('Le score a été mis à jour avec succès.')
     deck_data = init_deck()
     if deck_data:
         cartes = tirer_les_cartes(deck_data['deck_id'])
@@ -72,7 +82,7 @@ def jeu():
                     liste.append(LISTE_VALUE[v] + LISTE_SUIT[s])
             print(liste)
             return render_template('jeu.html', carte_data=cartes, liste_valeur=LISTE_VALUE, dos_carte=URL_DOS_CARTE,
-                                   liste=LISTE_SYMBOLE, liste_pos_correct=liste)
+                                   liste=LISTE_SYMBOLE, liste_pos_correct=liste, form=form)
         else:
             return "Erreur lors du tirage de la carte."
     else:
