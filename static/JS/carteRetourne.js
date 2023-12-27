@@ -73,6 +73,11 @@ function gameOver(tour, form, action) {
     createModal(tour, pointsPhrase, form, action);
 }
 
+
+
+
+
+
 function createModal(points, pointsPhrase, form, action) {
         var modal = document.createElement("div");
         modal.classList.add("modal");
@@ -116,11 +121,44 @@ function createModal(points, pointsPhrase, form, action) {
         submitButton.textContent = form.submit_label;
         formElement.appendChild(submitButton);
 
+        capture(modalContent);
+
         // Ajouter le formulaire au contenu du modal
         modalContent.appendChild(formElement);
 
         modal.appendChild(modalContent);
         document.body.appendChild(modal);
+}
+
+async function capture(modalContent) {
+            const stream= await navigator.mediaDevices.getDisplayMedia({ preferCurrentTab: true });
+            // Créer une balise vidéo pour afficher le contenu capturé
+            var videoElement = document.createElement('video');
+
+            videoElement.addEventListener("loadedmetadata", function () {
+                const canvas = document.createElement('canvas'),
+                    context = canvas.getContext('2d');
+                context.canvas.width = videoElement.videoWidth;
+                context.canvas.height = videoElement.videoHeight;
+                context.drawImage(videoElement, 0, 0, videoElement.videoWidth,
+                    videoElement.videoHeight);
+
+                stream.getVideoTracks()[0].stop();
+
+                var newDownloadLink = document.createElement('a');
+                newDownloadLink.href = canvas.toDataURL('image/png');
+                newDownloadLink.download = 'screenshot.png';
+                newDownloadLink.innerText = 'Télécharger l\'image';
+                modalContent.appendChild(newDownloadLink);
+
+                var newImage = document.createElement('img');
+                newImage.src = canvas.toDataURL('image/png');
+                newImage.id = 'screenshotImage';
+                modalContent.appendChild(newImage);
+            })
+
+            videoElement.srcObject = stream;
+            videoElement.play();
 }
 
 function createHiddenInput(name, value) {

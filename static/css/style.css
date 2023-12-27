@@ -26,6 +26,17 @@
     text-align: center;
 }
 
+.modal-content img {
+    width: 400px;
+    height: 400px;
+    object-fit: contain;
+}
+
+.modal-content a {
+    color: black!important;
+    margin-top: 15px;
+}
+
 .modal-content button {
     background-color: #134d06;
     color: white;
