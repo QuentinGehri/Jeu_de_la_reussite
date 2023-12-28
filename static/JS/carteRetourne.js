@@ -64,102 +64,107 @@ function faireFonctionnerLeJeu(listePosCorr, form, action) {
     });
 }
 
-function gameOver(tour, form, action) {
+async function gameOver(tour, form, action) {
     let pointsPhrase = " point";
     if (tour > 1) {
         pointsPhrase += "s"
     }
-    //messageErreur("Game over ! " + tour + pointsPhrase);
-    createModal(tour, pointsPhrase, form, action);
+    var modalContentImage = await capture();
+    createModal(tour, pointsPhrase, form, action, modalContentImage);
 }
 
+async function createModal(points, pointsPhrase, form, action, modalContentImage) {
+    var modal = document.createElement("div");
+    modal.classList.add("modal");
 
+    var modalContent = document.createElement("div");
+    modalContent.classList.add("modal-content");
 
+    var closeBtn = document.createElement("span");
+    closeBtn.classList.add("close");
+    closeBtn.innerHTML = "&times;";
 
+    closeBtn.addEventListener("click", function () {
+        document.body.removeChild(modal);
+    });
 
+    modalContent.appendChild(closeBtn);
 
-function createModal(points, pointsPhrase, form, action) {
-        var modal = document.createElement("div");
-        modal.classList.add("modal");
+    var modalTitle = document.createElement("h2");
+    modalTitle.textContent = "Game over";
+    modalContent.appendChild(modalTitle);
 
-        var modalContent = document.createElement("div");
-        modalContent.classList.add("modal-content");
+    var modalText = document.createElement("p");
+    modalText.textContent = "Vous avez fait " + points + pointsPhrase;
+    modalContent.appendChild(modalText);
 
-        var closeBtn = document.createElement("span");
-        closeBtn.classList.add("close");
-        closeBtn.innerHTML = "&times;";
+    // Create the form element
+    var formElement = document.createElement("form");
+    formElement.method = "POST";
+    action = action.replace(/^"|"$/g, '');
+    action = action.replace(/\//g, '');
+    formElement.action = action;
 
-        closeBtn.addEventListener("click", function () {
-            document.body.removeChild(modal);
+    // Add hidden inputs to the form
+    formElement.appendChild(createHiddenInput("csrf_token", form.csrf_token.value));
+    formElement.appendChild(createHiddenInput("points", points));
+
+    // Create the submit button
+    var submitButton = document.createElement("button");
+    submitButton.type = "submit";
+    submitButton.textContent = form.submit_label;
+    formElement.appendChild(submitButton);
+
+    // Add the form to the modal content
+    modalContent.appendChild(formElement);
+
+    // Append the modal content to the modal
+    modal.appendChild(modalContent);
+
+    // Append the captured content to the modal content
+    for (var modalContentImageElement of modalContentImage) {
+        modalContent.appendChild(modalContentImageElement);
+    }
+
+    // Append the modal to the body
+    document.body.appendChild(modal);
+}
+
+function capture() {
+    return new Promise(async (resolve) => {
+        const stream = await navigator.mediaDevices.getDisplayMedia({ preferCurrentTab: true });
+
+        var videoElement = document.createElement('video');
+
+        var newDownloadLink = document.createElement('a');
+        var newImage = document.createElement('img');
+
+        videoElement.addEventListener("loadedmetadata", function () {
+            const canvas = document.createElement('canvas'),
+                context = canvas.getContext('2d');
+            context.canvas.width = videoElement.videoWidth;
+            context.canvas.height = videoElement.videoHeight;
+            context.drawImage(videoElement, 0, 0, videoElement.videoWidth,
+                videoElement.videoHeight);
+
+            stream.getVideoTracks()[0].stop();
+
+            newDownloadLink.href = canvas.toDataURL('image/png');
+            newDownloadLink.download = 'screenshot.png';
+            newDownloadLink.innerText = 'Télécharger l\'image';
+
+            newImage.src = canvas.toDataURL('image/png');
+            newImage.id = 'screenshotImage';
+
+            // Resolve the promise with the captured content
+            resolve([newDownloadLink, newImage]);
         });
 
-        modalContent.appendChild(closeBtn);
-
-        var modalTitle = document.createElement("h2");
-        modalTitle.textContent = "Game over";
-        modalContent.appendChild(modalTitle);
-
-        var modalText = document.createElement("p");
-        modalText.textContent = "Vous avez fait " + points + pointsPhrase;
-        modalContent.appendChild(modalText);
-
-        // Créer un formulaire
-        var formElement = document.createElement("form");
-        formElement.method = "POST";
-        action = action.replace(/^"|"$/g, '');
-        action = action.replace(/\//g, '');
-        formElement.action = action;
-
-
-        // Ajouter les champs cachés au formulaire
-        formElement.appendChild(createHiddenInput("csrf_token", form.csrf_token.value));
-        formElement.appendChild(createHiddenInput("points", points));
-
-        // Créer le bouton de soumission du formulaire
-        var submitButton = document.createElement("button");
-        submitButton.type = "submit";
-        submitButton.textContent = form.submit_label;
-        formElement.appendChild(submitButton);
-
-        capture(modalContent);
-
-        // Ajouter le formulaire au contenu du modal
-        modalContent.appendChild(formElement);
-
-        modal.appendChild(modalContent);
-        document.body.appendChild(modal);
+        videoElement.srcObject = stream;
+        videoElement.play();
+    });
 }
 
-async function capture(modalContent) {
-            const stream= await navigator.mediaDevices.getDisplayMedia({ preferCurrentTab: true });
-            // Créer une balise vidéo pour afficher le contenu capturé
-            var videoElement = document.createElement('video');
-
-            videoElement.addEventListener("loadedmetadata", function () {
-                const canvas = document.createElement('canvas'),
-                    context = canvas.getContext('2d');
-                context.canvas.width = videoElement.videoWidth;
-                context.canvas.height = videoElement.videoHeight;
-                context.drawImage(videoElement, 0, 0, videoElement.videoWidth,
-                    videoElement.videoHeight);
-
-                stream.getVideoTracks()[0].stop();
-
-                var newDownloadLink = document.createElement('a');
-                newDownloadLink.href = canvas.toDataURL('image/png');
-                newDownloadLink.download = 'screenshot.png';
-                newDownloadLink.innerText = 'Télécharger l\'image';
-                modalContent.appendChild(newDownloadLink);
-
-                var newImage = document.createElement('img');
-                newImage.src = canvas.toDataURL('image/png');
-                newImage.id = 'screenshotImage';
-                modalContent.appendChild(newImage);
-            })
-
-            videoElement.srcObject = stream;
-            videoElement.play();
-}
 
 function createHiddenInput(name, value) {
     var input = document.createElement("input");
