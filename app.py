@@ -78,7 +78,6 @@ def generate_profile_picture():
     raise ValueError("API n'a pas ramené de carte")
 
 
-
 def init_deck():
     cartes = ''
     for suit in LISTE_SUIT:
@@ -123,10 +122,8 @@ def jeu():
                 for v in range(len(LISTE_VALUE)):
                     # tableau_position_correct[s][v] = value + LISTE_SUIT[s]
                     liste.append(LISTE_VALUE[v] + LISTE_SUIT[s])
-            print(liste)
             if current_user.is_authenticated:
                 info_joueur = fetch_info_joueur(current_user.id)
-                print(current_user.id, info_joueur)
                 return render_template('jeu.html', carte_data=cartes, liste_valeur=LISTE_VALUE, dos_carte=URL_DOS_CARTE,
                                    liste=LISTE_SYMBOLE, liste_pos_correct=liste, form=form, info_joueur=info_joueur)
         else:
