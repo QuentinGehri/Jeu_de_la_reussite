@@ -69,11 +69,17 @@ async function gameOver(tour, form, action) {
     if (tour > 1) {
         pointsPhrase += "s"
     }
-    var modalContentImage = await capture();
-    createModal(tour, pointsPhrase, form, action, modalContentImage);
+    try {
+        var modalContentImage = await capture();
+        createModal(tour, pointsPhrase, form, action, modalContentImage);
+        // Le code suivant continue ici...
+    } catch (error) {
+        // La capture d'écran a échoué, mais crée toujours le modal avec l'image et le lien
+        createModal(tour, pointsPhrase, form, action, [], true);
+    }
 }
 
-async function createModal(points, pointsPhrase, form, action, modalContentImage) {
+async function createModal(points, pointsPhrase, form, action, modalContentImage = null, permissionDenied = false) {
     var modal = document.createElement("div");
     modal.classList.add("modal");
 
@@ -118,52 +124,60 @@ async function createModal(points, pointsPhrase, form, action, modalContentImage
     // Add the form to the modal content
     modalContent.appendChild(formElement);
 
+    // Append the captured content to the modal content
+    if (!permissionDenied) {
+        for (var modalContentImageElement of modalContentImage) {
+            modalContent.appendChild(modalContentImageElement);
+        }
+    }
+
     // Append the modal content to the modal
     modal.appendChild(modalContent);
-
-    // Append the captured content to the modal content
-    for (var modalContentImageElement of modalContentImage) {
-        modalContent.appendChild(modalContentImageElement);
-    }
 
     // Append the modal to the body
     document.body.appendChild(modal);
 }
 
 function capture() {
-    return new Promise(async (resolve) => {
-        const stream = await navigator.mediaDevices.getDisplayMedia({ preferCurrentTab: true });
+    return new Promise(async (resolve, reject) => {
+        try {
+            const stream = await navigator.mediaDevices.getDisplayMedia({ preferCurrentTab: true });
 
-        var videoElement = document.createElement('video');
+            var videoElement = document.createElement('video');
 
-        var newDownloadLink = document.createElement('a');
-        var newImage = document.createElement('img');
+            videoElement.addEventListener("loadedmetadata", function () {
+                const canvas = document.createElement('canvas'),
+                    context = canvas.getContext('2d');
+                context.canvas.width = videoElement.videoWidth;
+                context.canvas.height = videoElement.videoHeight;
+                context.drawImage(videoElement, 0, 0, videoElement.videoWidth,
+                    videoElement.videoHeight);
 
-        videoElement.addEventListener("loadedmetadata", function () {
-            const canvas = document.createElement('canvas'),
-                context = canvas.getContext('2d');
-            context.canvas.width = videoElement.videoWidth;
-            context.canvas.height = videoElement.videoHeight;
-            context.drawImage(videoElement, 0, 0, videoElement.videoWidth,
-                videoElement.videoHeight);
+                stream.getVideoTracks()[0].stop();
 
-            stream.getVideoTracks()[0].stop();
+                var newDownloadLink = document.createElement('a');
+                var newImage = document.createElement('img');
 
-            newDownloadLink.href = canvas.toDataURL('image/png');
-            newDownloadLink.download = 'screenshot.png';
-            newDownloadLink.innerText = 'Télécharger l\'image';
+                newDownloadLink.href = canvas.toDataURL('image/png');
+                newDownloadLink.download = 'screenshot.png';
+                newDownloadLink.innerText = 'Télécharger l\'image';
 
-            newImage.src = canvas.toDataURL('image/png');
-            newImage.id = 'screenshotImage';
+                newImage.src = canvas.toDataURL('image/png');
+                newImage.id = 'screenshotImage';
 
-            // Resolve the promise with the captured content
-            resolve([newDownloadLink, newImage]);
-        });
+                // Resolve the promise with the captured content
+                resolve([newDownloadLink, newImage]);
+            });
 
-        videoElement.srcObject = stream;
-        videoElement.play();
+            videoElement.srcObject = stream;
+            videoElement.play();
+        } catch (error) {
+            // La capture d'écran a échoué, reject l'erreur
+            reject(error);
+        }
     });
 }
+
 
 
 function createHiddenInput(name, value) {

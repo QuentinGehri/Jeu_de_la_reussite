@@ -4,6 +4,27 @@
     font-family: 'Silkscreen', sans-serif;
 }
 
+.profile-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.profile-image {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-right: 10px; /* Espacement entre l'image et le pseudo */
+}
+
+.profile-name {
+    font-size: 18px; /* Taille du texte du pseudo */
+    font-weight: bold; /* Police en gras pour le pseudo */
+    color: #fefefe;
+}
+
 .modal {
     display: flex;
     align-items: center;

@@ -7,8 +7,12 @@
 {% block body %}
     <body id="tapisJeu">
         <h1>Jeu de la réussite</h1>
-        <h2>Tapis de jeu :</h2>
+        <div class="profile-section">
+            <img class="profile-image" src="data:image/png;base64,{{ info_joueur['photo_profil'] }}" alt="Profile Image">
+            <div class="profile-name">{{ info_joueur['pseudo'] }}</div>
+        </div>
         <a href="{{ url_for('deconnexion') }}">Déconnexion</a>
+        <h2>Tapis de jeu :</h2>
         <table class="table-container">
         <tr>
             <th>

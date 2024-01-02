@@ -1,6 +1,8 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin
+from sqlalchemy import LargeBinary
+import base64
 
 db = SQLAlchemy()
 app = Flask(__name__)
@@ -13,11 +15,26 @@ class Joueur(db.Model, UserMixin):
     pseudo = db.Column(db.String(20), nullable=False, unique=True)
     mot_de_passe = db.Column(db.String(80), nullable=False)
     meilleur_score = db.Column(db.Integer, nullable=False)
+    photo_profil = db.Column(LargeBinary)
 
 
 @login_manager.user_loader
 def load_user(user_id):
     return Joueur.query.get(int(user_id))
+
+
+@app.route('/fetch_info_joueur/<int:player_id>', methods=['GET'])
+def fetch_info_joueur(player_id):
+    player = Joueur.query.filter_by(id=player_id).first()
+    if player:
+        player_info = {
+            'pseudo': player.pseudo,
+            'meilleur_score': player.meilleur_score,
+            'photo_profil': base64.b64encode(player.photo_profil).decode('utf-8'),
+        }
+        return player_info
+    else:
+        return "Utilisateur non trouvé"
 
 
 @app.route('/update_score/<int:user_id>/<int:new_score>')
