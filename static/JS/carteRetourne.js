@@ -86,16 +86,6 @@ async function createModal(points, pointsPhrase, form, action, modalContentImage
     var modalContent = document.createElement("div");
     modalContent.classList.add("modal-content");
 
-    var closeBtn = document.createElement("span");
-    closeBtn.classList.add("close");
-    closeBtn.innerHTML = "&times;";
-
-    closeBtn.addEventListener("click", function () {
-        document.body.removeChild(modal);
-    });
-
-    modalContent.appendChild(closeBtn);
-
     var modalTitle = document.createElement("h2");
     modalTitle.textContent = "Game over";
     modalContent.appendChild(modalTitle);
