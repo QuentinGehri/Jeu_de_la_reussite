@@ -3,7 +3,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from flask_bcrypt import Bcrypt
 from flask_wtf.csrf import generate_csrf
 from forms import FormulaireInscription, FormulaireConnexion, FormGameOver
-from models import db, Joueur, load_user, update_score, fetch_info_joueur
+from models import db, Joueur, load_user, update_score, fetch_info_joueur, historique_points, fetch_best_score
 from PIL import Image, ImageDraw
 from io import BytesIO
 import random
@@ -111,7 +111,6 @@ def jeu():
         if current_user.is_authenticated:
             user_id = current_user.id
             update_score(user_id, form.points.data)
-            print('Le score a été mis à jour avec succès.')
     deck_data = init_deck()
     if deck_data:
         cartes = tirer_les_cartes(deck_data['deck_id'])
@@ -124,8 +123,11 @@ def jeu():
                     liste.append(LISTE_VALUE[v] + LISTE_SUIT[s])
             if current_user.is_authenticated:
                 info_joueur = fetch_info_joueur(current_user.id)
+                historique_point = historique_points(current_user.id)
+                meilleur_score = fetch_best_score(current_user.id)
                 return render_template('jeu.html', carte_data=cartes, liste_valeur=LISTE_VALUE, dos_carte=URL_DOS_CARTE,
-                                   liste=LISTE_SYMBOLE, liste_pos_correct=liste, form=form, info_joueur=info_joueur)
+                                       liste=LISTE_SYMBOLE, liste_pos_correct=liste, form=form, info_joueur=info_joueur,
+                                       historique_point=historique_point, meilleur_score=meilleur_score)
         else:
             return "Erreur lors du tirage de la carte."
     else:

@@ -1,69 +1,109 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename="css/style.css") }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.8/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}
 
 {% block body %}
     <body id="tapisJeu">
-        <h1>Jeu de la réussite</h1>
-        <div class="profile-section">
-            <img class="profile-image" src="data:image/png;base64,{{ info_joueur['photo_profil'] }}" alt="Profile Image">
-            <div class="profile-name">{{ info_joueur['pseudo'] }}</div>
-        </div>
-        <a href="{{ url_for('deconnexion') }}">Déconnexion</a>
-        <h2>Tapis de jeu :</h2>
-        <table class="table-container">
-        <tr>
-            <th>
-                <h1>Symbole</h1>
-            </th>
-            {% for valeur in liste_valeur %}
-                <th>
-                {% if valeur == '0' %}
-                    <h1>10</h1>
-                {%  else  %}
-                    <h1>{{ valeur }}</h1>
-                {% endif %}
-                </th>
-            {% endfor %}
-        </tr>
-        {% set nb_carte = 0 %}
-        {% for i in range(0, 4) %}
-            <tr>
-                {% for j in range(0, 10) %}
-                    {% set nb_carte = (i * 9 + j) - 1 %}
-                    {% if j == 0 %}
-                        <td class="symbole">
-                            <img src="{{ liste[i] }}" alt="Symbole de coeur" class="imageSymbole">
-                        </td>
-                    {%  else  %}
-                    <td class="card" id="{{ i * 9 + j }}">
-                        <div class="front">
-                            <img src="{{ dos_carte }}" alt="Dos de la carte">
-                        </div>
-                        <div class="back">
-                            <img src="{{ carte_data['cards'][nb_carte]['image'] }}" alt="{{ carte_data['cards'][nb_carte]['code'] }}">
-                        </div>
-                    </td>
-                    {% endif %}
-                {% endfor %}
-            </tr>
-        {% endfor %}
-        </table>
-    <!--<div id="erreur">
+        <div class="container">
+            <h1 data-toggle="tooltip" data-placement="top" title="Cliquez ici pour afficher les règles du jeu">Jeu de la réussite</h1>
 
-    </div>-->
+            <div class="profile-section">
+                <img class="profile-image" src="data:image/png;base64,{{ info_joueur['photo_profil'] }}" alt="Profile Image">
+                <div class="profile-name">{{ info_joueur['pseudo'] }}</div>
+            </div>
+            <a href="{{ url_for('deconnexion') }}">Déconnexion</a>
+
+            <div class="mt-4">
+                <h2>Historique des points :</h2>
+                <table class="table-container">
+                    <tr>
+                        <th>
+                            <h1>Score</h1>
+                        </th>
+                    </tr>
+                    {% if historique_point %}
+                        {% for entry in historique_point.get_json()['historique'] %}
+                            <tr>
+                                <td>{{ entry['score'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td>No historical scores found</td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+
+            <div class="mt-4">
+                <h2>Meilleur score :</h2>
+                {% if meilleur_score %}
+                    <div class="best-score">
+                        <p>Le meilleur score : {{ meilleur_score.get_json()["best_score"] }}</p>
+                    </div>
+                {% else %}
+                    <p>Pas de meilleur score disponible</p>
+                {% endif %}
+            </div>
+
+            <div class="mt-4">
+                <h2>Tapis de jeu :</h2>
+                <table class="table-container">
+                    <tr>
+                        <th>
+                            <h1>Symbole</h1>
+                        </th>
+                        {% for valeur in liste_valeur %}
+                            <th>
+                                {% if valeur == '0' %}
+                                    <h1>10</h1>
+                                {%  else  %}
+                                    <h1>{{ valeur }}</h1>
+                                {% endif %}
+                            </th>
+                        {% endfor %}
+                    </tr>
+                    {% set nb_carte = 0 %}
+                    {% for i in range(0, 4) %}
+                        <tr>
+                            {% for j in range(0, 10) %}
+                                {% set nb_carte = (i * 9 + j) - 1 %}
+                                {% if j == 0 %}
+                                    <td class="symbole">
+                                        <img src="{{ liste[i] }}" alt="Symbole de coeur" class="imageSymbole">
+                                    </td>
+                                {%  else  %}
+                                    <td class="card" id="{{ i * 9 + j }}">
+                                        <div class="front">
+                                            <img src="{{ dos_carte }}" alt="Dos de la carte">
+                                        </div>
+                                        <div class="back">
+                                            <img src="{{ carte_data['cards'][nb_carte]['image'] }}" alt="{{ carte_data['cards'][nb_carte]['code'] }}">
+                                        </div>
+                                    </td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <!-- Your existing scripts block -->
     </body>
 {% endblock %}
-    {% block scripts %}
-        <script src="../static/JS/carteRetourne.js"></script>
-        <script>
-            var listePosCorr = {{ liste_pos_correct | tojson | safe }};
-            var form = {{ form.to_js() | tojson | safe }};
-            var action = '{{ url_for('jeu') | tojson | safe }}';
-            faireFonctionnerLeJeu(listePosCorr, form, action);
-        </script>
-    {% endblock %}
 
-
+{% block scripts %}
+    <script src="../static/JS/carteRetourne.js"></script>
+    <script>
+        var listePosCorr = {{ liste_pos_correct | tojson | safe }};
+        var form = {{ form.to_js() | tojson | safe }};
+        var action = '{{ url_for('jeu') | tojson | safe }}';
+        faireFonctionnerLeJeu(listePosCorr, form, action);
+    </script>
+{% endblock %}

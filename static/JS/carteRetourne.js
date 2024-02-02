@@ -87,7 +87,11 @@ async function createModal(points, pointsPhrase, form, action, modalContentImage
     modalContent.classList.add("modal-content");
 
     var modalTitle = document.createElement("h2");
-    modalTitle.textContent = "Game over";
+    if (points !== 36) {
+        modalTitle.textContent = "Game over";
+    } else {
+        modalTitle.textContent = "Vous avez gagné !";
+    }
     modalContent.appendChild(modalTitle);
 
     var modalText = document.createElement("p");
