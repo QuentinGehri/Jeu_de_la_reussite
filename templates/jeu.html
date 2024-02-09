@@ -19,42 +19,9 @@
             <a href="{{ url_for('deconnexion') }}">Déconnexion</a>
 
             <div class="mt-4">
-                <h2>Historique des points :</h2>
-                <table class="table-container">
-                    <tr>
-                        <th>
-                            <h1>Score</h1>
-                        </th>
-                    </tr>
-                    {% if historique_point %}
-                        {% for entry in historique_point.get_json()['historique'] %}
-                            <tr>
-                                <td>{{ entry['score'] }}</td>
-                            </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td>No historical scores found</td>
-                        </tr>
-                    {% endif %}
-                </table>
-            </div>
-
-            <div class="mt-4">
-                <h2>Meilleur score :</h2>
-                {% if meilleur_score %}
-                    <div class="best-score">
-                        <p>Le meilleur score : {{ meilleur_score.get_json()["best_score"] }}</p>
-                    </div>
-                {% else %}
-                    <p>Pas de meilleur score disponible</p>
-                {% endif %}
-            </div>
-
-            <div class="mt-4">
                 <h2>Tapis de jeu :</h2>
                 <table class="table-container">
-                    <tr>
+                     <tr>
                         <th>
                             <h1>Symbole</h1>
                         </th>
@@ -89,12 +56,78 @@
                                 {% endif %}
                             {% endfor %}
                         </tr>
-                    {% endfor %}
+                 {% endfor %}
                 </table>
             </div>
-        </div>
 
-        <!-- Your existing scripts block -->
+            <div class="mt-4">
+                <h2>Meilleur score :</h2>
+                {% if meilleur_score %}
+                    <div class="best-score">
+                        <p>Le meilleur score : {{ meilleur_score.get_json()["best_score"] }}</p>
+                    </div>
+                {% else %}
+                    <p>Pas de meilleur score disponible</p>
+                {% endif %}
+            </div>
+
+            <div class="mt-4">
+                <h2>Historique des points :</h2>
+                <table class="table-container">
+                    <tr>
+                        <th>
+                            <h1>Score</h1>
+                        </th>
+                    </tr>
+                    {% if historique_point %}
+                        {% for entry in historique_point.get_json()['historique'] %}
+                            <tr>
+                                <td>{{ entry['score'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td>No historical scores found</td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+
+            <div class="mt-4">
+                <h2>Règles du jeu :</h2>
+                <p>
+                    <strong>Disposition des Cartes :</strong>
+                    Les cartes sont disposées sur un tableau de jeu comprenant 4 lignes et 9 colonnes. Chaque ligne
+                    représente une couleur (cœur, pique, carreau, trèfle) et chaque colonne une valeur
+                    (As, Roi, Dame, Valet, 10, 9, 8, 7, 6).
+                </p>
+                <p>
+                    <strong>Début du Jeu :</strong>
+                    Le jeu débute en retournant la carte en bas à droite du tableau (ligne 4, colonne 9). Cette carte
+                    est alors placée à l'emplacement correspondant
+                    (par exemple, l'As de Cœur irait à la ligne 1, colonne 1).
+                </p>
+                <p>
+                    <strong>Déplacement des Cartes :</strong>
+                    La partie se poursuit en déplaçant la carte actuelle vers son emplacement correct, en suivant la
+                    séquence des couleurs et des valeurs. On répète ce processus jusqu'à atteindre le 6 de trèfle situé
+                    en bas à droite.
+                </p>
+                <p>
+                    <strong>Fin de la Partie :</strong>
+                    La partie se termine dès qu'on atteint le 6 de trèfle. Si on trouve cette carte, la partie est
+                    perdue, car il n'y a plus de nouvelles cartes à prendre en bas à droite.
+                </p>
+                <p>
+                    <strong>Calcul des Points :</strong>
+                    Une fois la partie perdue, toutes les cartes sont retournées. Chaque carte bien placée rapporte un
+                    point. L'objectif est d'avoir toutes les cartes correctement placées, en plus de trouver le 6 de
+                    trèfle à la fin.
+                </p>
+            </div>
+
+
+        </div>
     </body>
 {% endblock %}
 

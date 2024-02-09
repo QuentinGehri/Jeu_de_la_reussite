@@ -3,12 +3,11 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from flask_bcrypt import Bcrypt
 from flask_wtf.csrf import generate_csrf
 from forms import FormulaireInscription, FormulaireConnexion, FormGameOver
-from models import db, Joueur, load_user, update_score, fetch_info_joueur, historique_points, fetch_best_score
+from models import db, Joueur, update_score, fetch_info_joueur, historique_points, fetch_best_score
 from PIL import Image, ImageDraw
 from io import BytesIO
 import random
 import requests
-import numpy as np
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bdd.db'
