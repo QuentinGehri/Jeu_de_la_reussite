@@ -2,6 +2,8 @@ from flask import Flask, render_template, url_for, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
 from flask_wtf.csrf import generate_csrf
+
+import models
 from forms import FormulaireInscription, FormulaireConnexion, FormGameOver
 from models import db, Joueur, update_score, fetch_info_joueur, historique_points, fetch_best_score
 from PIL import Image, ImageDraw
@@ -23,6 +25,7 @@ login_manager.login_view = "connexion"
 
 @login_manager.user_loader
 def load_user(id_joueur):
+    # Fait comme ça car ça ne marche pas si on fait une methode directement dans la classe
     return Joueur.query.get(int(id_joueur))
 
 
@@ -165,6 +168,7 @@ def connexion():
                 login_user(joueur_connecte)
                 return redirect(url_for('jeu'))
     return render_template('login.html', form=form)
+
 
 
 if __name__ == '__main__':

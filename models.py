@@ -17,6 +17,9 @@ class Joueur(db.Model, UserMixin):
     photo_profil = db.Column(db.LargeBinary)
     scores = db.relationship('ScoreJoueur', backref='joueur', lazy=True)
 
+    def fetch_j(self):
+        return self.query.get(int(self.id))
+
 
 class ScoreJoueur(db.Model, UserMixin):
     id_score = db.Column(db.Integer, primary_key=True)
@@ -30,7 +33,7 @@ class Score(db.Model, UserMixin):
     score_joueurs = db.relationship('ScoreJoueur', backref='score', lazy=True)
 
 
-@app.route('/fetch_info_joueur/<int:player_id>', methods=['GET'])
+# @app.route('/fetch_info_joueur/<int:player_id>', methods=['GET'])
 def fetch_info_joueur(player_id):
     player = Joueur.query.filter_by(id=player_id).first()
     if player:
@@ -44,7 +47,7 @@ def fetch_info_joueur(player_id):
         return "Utilisateur non trouvé"
 
 
-@app.route('/historique_points/<int:user_id>', methods=['GET'])
+# @app.route('/historique_points/<int:user_id>', methods=['GET'])
 def historique_points(user_id):
     # Rechercher l'utilisateur dans la base de données
     user = Joueur.query.get(user_id)
@@ -66,7 +69,7 @@ def get_best_score(user_id):
         return jsonify({'error': 'Utilisateur non trouvé'}), 404
 
 
-@app.route('/best_score/<int:user_id>', methods=['GET'])
+# @app.route('/best_score/<int:user_id>', methods=['GET'])
 def fetch_best_score(user_id):
     return get_best_score(user_id)
 
@@ -89,8 +92,7 @@ def inserer_score(new_score):
 
     return score
 
-
-@app.route('/update_score/<int:user_id>/<int:new_score>')
+# @app.route('/update_score/<int:user_id>/<int:new_score>')
 def update_score(user_id, new_score):
     # Rechercher l'utilisateur dans la base de données
     user = Joueur.query.get(user_id)
